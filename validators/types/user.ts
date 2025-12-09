@@ -1,3 +1,23 @@
+
+
+// ———————————————————————————————————————————
+// User Types
+// ———————————————————————————————————————————
+export interface UserResponseModel {
+  id: string;
+  first_name: string;
+  last_name?: string | null;
+  email: string;
+  phone?: string | null;
+  address?: string | null;
+  avatar?: string | null;
+  gender?: string | null;
+  role: "Super_Admin" | "Admin" | "Business_User" | "Standard_User";
+  profile_completed: boolean;
+  is_verified: boolean;
+  fcmtoken?: string | null;
+}
+
 export interface UserType {
   id: string;
   first_name: string;
