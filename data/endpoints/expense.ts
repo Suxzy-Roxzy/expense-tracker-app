@@ -1,9 +1,11 @@
 import {
-  CreateExpenseType,
-  UpdateExpenseType,
+  createExpenseSchema,
+  createExpenseSchemaType,
+  updateExpenseSchemaType,
 } from "@/validators/schemas/expense.js";
-import { AxiosInstance } from "../instance.js";
+import { AxiosInstance, AxiosInstanceWithToken } from "../instance.js";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { ExpensesWithFilter } from "@/validators/types/expense.js";
 
 // POST
 // /api/v1/expenses/
@@ -11,15 +13,17 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 export const useCreateExpense = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (newExpense: CreateExpenseType) => {
-      const response = await AxiosInstance.post(
+    mutationFn: async (data: createExpenseSchemaType) => {
+      const response = await AxiosInstanceWithToken.post(
         "/api/v1/expenses/",
-        newExpense
+        data
       );
       return response.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["expenses"] });
+      // COME BACK TO THIS AND FIX THE ANY!!!!!!
+      queryClient.invalidateQueries(["expenses"] as any);
+      queryClient.invalidateQueries(["expenses-analytics"] as any);
     },
   });
 };
@@ -27,11 +31,11 @@ export const useCreateExpense = () => {
 // GET
 // /api/v1/expenses/
 // Get all expenses with filters
-export const useFetchExpenses = (params: Record<string, string>) => {
+export const useFetchExpenses = (params?: ExpensesWithFilter) => {
   return useQuery({
     queryKey: ["expenses", params],
-    queryFn: async (): Promise<string> => {
-      const response = await AxiosInstance.get("/api/v1/expenses/", {
+    queryFn: async () => {
+      const response = await AxiosInstanceWithToken.get("/api/v1/expenses/", {
         params,
       });
       return response.data;
@@ -43,15 +47,16 @@ export const useFetchExpenses = (params: Record<string, string>) => {
 // /api/v1/expenses/{expense_id}
 // Get a specific expense
 
-export const useFetchExpenseById = (expense_id: string) => {
+export const useFetchExpenseById = (expense_id: string, enabled: true) => {
   return useQuery({
     queryKey: ["expense", expense_id],
-    queryFn: async (): Promise<CreateExpenseType> => {
+    queryFn: async () => {
       const response = await AxiosInstance.get(
         `/api/v1/expenses/${expense_id}`
       );
       return response.data;
     },
+    enabled, //enabled && expense_id (to be out in here later if needed),
   });
 };
 
@@ -60,22 +65,26 @@ export const useFetchExpenseById = (expense_id: string) => {
 // Update an expense
 export const useUpdateExpense = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async ({
-      updatedExpense,
+      data,
       expense_id,
     }: {
-      updatedExpense: UpdateExpenseType;
+      data: updateExpenseSchemaType;
       expense_id: string;
     }) => {
-      const response = await AxiosInstance.patch(
+      const response = await AxiosInstanceWithToken.patch(
         `/api/v1/expenses/${expense_id}`,
-        updatedExpense
+        data
       );
       return response.data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["expenses"] });
+    onSuccess: (variable) => {
+      // COME BACK TO THIS AND FIX THE ANY!!!!!!
+      queryClient.invalidateQueries(["expenses"] as any);
+      queryClient.invalidateQueries(["expense", variable.expense_id] as any);
+      queryClient.invalidateQueries(["expenses-analytics"] as any);
     },
   });
 };

@@ -5,10 +5,11 @@ import {
   useQueryClient,
   UseQueryOptions,
 } from "@tanstack/react-query";
-import { AxiosInstance, AxiosInstanceWithToken } from "../instance.js";
+import { AxiosInstance, AxiosInstanceWithToken } from "../instance";
 import {
   BaseResponse,
   CreateUserResponse,
+  LoginResponse,
   passwordReset,
   verify2FA,
 } from "@/validators/types/auth";
@@ -32,7 +33,7 @@ import {
 } from "@/validators/schemas/auth";
 import { toast } from "sonner";
 import z from "zod";
-import { removeToken } from "@/utils/auth.js";
+import { removeToken } from "@/utils/auth";
 
 // POST
 // /api/v1/auth/signup
@@ -80,8 +81,7 @@ export const useResendVerificationEmail = () => {
 // Login Users
 export const useLogin = () => {
   return useMutation({
-    // mutationKey: ["login"],
-    mutationFn: async (loginUser: LoginSchemaType) => {
+    mutationFn: async (loginUser: LoginSchemaType) : Promise<LoginResponse> => {
       const validatedData = loginSchema.parse(loginUser);
       const response = await AxiosInstanceWithToken.post(
         "/api/v1/auth/login",
@@ -89,9 +89,6 @@ export const useLogin = () => {
       );
       return response.data;
     },
-    // onSuccess: () => {
-    //   console.log("Login successful");
-    // },
   });
 };
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Jost } from "next/font/google";
+import Providers from "@/providers";
 // import {CenturyGothic} from "next/font/"
 
 const jost = Jost({
@@ -31,7 +32,7 @@ export default function RootLayout({
       <body
         className={`${jost.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

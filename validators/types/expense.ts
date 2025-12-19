@@ -1,4 +1,3 @@
-import { CreateExpenseType } from "../schemas/expense";
 // Types for fetching expenses with filters and pagination
 
 // category: Filter by expense category
@@ -9,7 +8,7 @@ import { CreateExpenseType } from "../schemas/expense";
 // page_size
 
 
-export type FetchingExpensesType = {
+export type ExpensesWithFilter = {
   category?: string;
   start_date?: string;
   end_date?: string;
@@ -18,9 +17,7 @@ export type FetchingExpensesType = {
   page_size?: number;
 };
 
-// omiting both status and message from the original schema
-export type fetchinganexpensetype = Omit<CreateExpenseType, "status" | "message">;
-export type expense_id_type = CreateExpenseType["id"];
+
 
 
 

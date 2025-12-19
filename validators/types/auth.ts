@@ -35,3 +35,27 @@ export type passwordReset = {
 export type verify2FA = {
     code: string;
 }
+
+export interface VerificationResponse extends BaseResponse {
+    requires_verification: boolean;
+}
+
+export interface TwoFactorResponse extends BaseResponse {
+    requires_2fa: boolean;
+    users : {
+        email: string;
+        uid: string;
+    }
+}
+
+export interface LoginSuccessResponse extends BaseResponse {
+    user: UserModel;
+    access_token: string;
+    refresh_token: string;
+}
+
+
+export type LoginResponse =
+  | VerificationResponse
+  | TwoFactorResponse
+  | LoginSuccessResponse;
