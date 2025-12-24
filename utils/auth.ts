@@ -57,12 +57,14 @@ export const getUserId = (): string | null => {
 // Save Token to Cookies
 export const saveToken = (data: TokenType) => {
   const { access_token, refresh_token, user } = data;
-  const decodedToken = jwtDecode<{ expiration_time?: number }>(access_token);
-  if (!decodedToken.expiration_time) {
+  console.log(data)
+  const decodedToken = jwtDecode<{ exp?: number }>(access_token);
+  console.log(decodedToken)
+  if (!decodedToken.exp) {
     console.warn("Access Token does not have an expiration field.");
     return;
   }
-  const expirationDate = new Date(decodedToken.expiration_time * 1000); // Convert to milliseconds
+  const expirationDate = new Date(decodedToken.exp * 1000); // Convert to milliseconds
   const tokenData = {
     access_token,
     refresh_token,
@@ -71,6 +73,7 @@ export const saveToken = (data: TokenType) => {
       id: user.id,
     },
   };
+  console.log(tokenData)
   Cookies.set(COOKIE_NAME, JSON.stringify(tokenData), {
     expires: expirationDate,
     secure: NODE_ENV === "production",

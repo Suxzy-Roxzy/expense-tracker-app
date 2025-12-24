@@ -23,8 +23,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { PasswordInput } from "@/components/data/password-input";
-import SubmissionButton from "@/components/data/submission-button";
+import { PasswordInput } from "@/components/custom/password-input";
+import SubmissionButton from "@/components/custom/submission-button";
 
 const LoginForm = ({
   className,
@@ -74,6 +74,7 @@ const LoginForm = ({
       } else if ("access_token" in response) {
         toast.success(response.message);
         reset();
+        console.log(response)
         saveToken(response);
         if (!response.user.profile_completed) {
           router.push("/onboarding");

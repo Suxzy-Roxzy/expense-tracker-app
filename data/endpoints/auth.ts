@@ -100,7 +100,7 @@ export const useVerifyAccount = () => {
     mutationFn: async (verifyAccount: verifyTokenSchemaType) => {
       const validatedData = verifyTokenSchema.parse(verifyAccount);
       const response = await AxiosInstanceWithToken.post(
-        "// /api/v1/auth/verify-account",
+        "/api/v1/auth/verify-account",
         validatedData
       );
       return response.data;

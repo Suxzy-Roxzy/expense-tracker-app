@@ -1,6 +1,6 @@
 "use client"
-import { PasswordInput } from "@/components/data/password-input";
-import SubmissionButton from "@/components/data/submission-button";
+import { PasswordInput } from "@/components/custom/password-input";
+import SubmissionButton from "@/components/custom/submission-button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Form,
@@ -28,8 +28,8 @@ const RegisterationForm = ({
   const form = useForm<SignupSchemaType>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
+      first_name: "",
+      last_name: "",
       email: "",
       password: "",
     },
@@ -57,7 +57,7 @@ const RegisterationForm = ({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
+      <Card className="border-0 shadow-none ">
         <CardContent>
           <div className="mb-6 px-3 space-y-2">
             <h5 className="text-xl font-bold text-primary dark:text-white">
@@ -78,7 +78,7 @@ const RegisterationForm = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
-                  name="firstName"
+                  name="first_name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>First Name</FormLabel>
@@ -92,7 +92,7 @@ const RegisterationForm = ({
 
                 <FormField
                   control={form.control}
-                  name="lastName"
+                  name="last_name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Last Name</FormLabel>

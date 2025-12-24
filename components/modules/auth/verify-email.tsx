@@ -1,5 +1,5 @@
 "use client";
-import SubmissionButton from "@/components/data/submission-button";
+import SubmissionButton from "@/components/custom/submission-button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Form,

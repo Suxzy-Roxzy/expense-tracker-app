@@ -35,6 +35,19 @@ export interface UserType {
   two_factor_enabled: boolean;
   is_oauth: boolean;
   created_at: string;
+  profile_completed: boolean;
+}
+
+
+export type ActivityBase = {
+  description: string
+  activity_type: 'create' | 'update' | 'delete';
+  user_id: string;
+}
+
+export type ActivityResponseType  = ActivityBase & {
+  id: string;
+  created_at: string;
 }
 
 export type UsersType = UserType[];

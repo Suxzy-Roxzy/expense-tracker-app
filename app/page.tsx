@@ -1,4 +1,3 @@
-import Button from '@/components/custom/Button'
 import React from 'react'
 
 const page = () => {
@@ -6,7 +5,8 @@ const page = () => {
   return (
     <>  
     <div className='font-century-gothic font-black text-4xl justify-center text-align-center mx-auto my-auto'>page</div>
-    <Button/>
+    <div className='font-century-gothic font-black text-4xl justify-center text-align-center mx-auto my-auto'>I say High</div>
+    
     </>
   )
 }

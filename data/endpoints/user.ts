@@ -1,4 +1,4 @@
-import { UserResponseModel, UserType } from "@/validators/types/user";
+import { ActivityResponseType, UserResponseModel, UserType } from "@/validators/types/user";
 import {
   UserUpdateSchemaType,
   UserUpdateSchema,
@@ -19,10 +19,7 @@ export const useFetchUsers = (enabled: boolean = true) => {
       const response = await AxiosInstanceWithToken.get("/api/v1/user/all");
       return response.data;
     },
-    enabled,
-    onError: (error: any) => {
-      throw error;
-    },
+    enabled : !!enabled,
   });
 };
 
@@ -31,16 +28,14 @@ export const useFetchUsers = (enabled: boolean = true) => {
 // Get Current User
 export const useGetCurrentUser = (enabled: boolean = true) => {
   return useQuery({
-    // queryKey: ["currentUser", "profile"],
+    queryKey: ["user", "profile"],
     queryFn: async (): Promise<UserType> => {
       const response = await AxiosInstanceWithToken.get(
         "/api/v1/user/profile/"
       );
       return response.data;
     },
-    onError: (error: any) => {
-      throw error;
-    },
+    enabled: !!enabled,
   });
 };
 
@@ -79,17 +74,14 @@ export const useDeleteUser = () => {
 
   return useMutation({
     mutationFn: async (user_id: string) => {
-      const response = await AxiosInstance.delete(
+       await AxiosInstanceWithToken.delete(
         `/api/v1/user/delete_user/${user_id}`
       );
     },
     onSuccess: () => {
       // COME BACK TO THIS!!!!!!!
       queryClient.invalidateQueries(["user", "all"] as any);
-    },
-    onError: (error: any) => {
-      throw error;
-    },
+    }
   });
 };
 
@@ -103,7 +95,7 @@ export const useChangeUserRole = () => {
   return useMutation({
     mutationFn: async (data: changeUserRoleSchemaType) => {
       const validatedData = changeUserRoleSchema.parse(data);
-      const response = await AxiosInstance.post(`/api/v1/user/change-role`, {
+      const response = await AxiosInstanceWithToken.post(`/api/v1/user/change-role`, {
         validatedData,
       });
       console.log("User role changed:", response.data);
@@ -125,15 +117,12 @@ export const useChangeUserRole = () => {
 export const useGetUserActivity = (enabled: boolean = true) => {
   return useQuery({
     queryKey: ["user", "activity"],
-    queryFn: async () => {
+    queryFn: async (): Promise<ActivityResponseType[]> => {
       const response = await AxiosInstanceWithToken.get(
         "/api/v1/user/activity"
       );
       return response.data; 
     },
-    enabled,
-    onError: (error: any) => {
-      throw error
-    }
+    enabled: !!enabled,
   });
 };
